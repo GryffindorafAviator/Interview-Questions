@@ -45,3 +45,78 @@
 // Thus the answer is 6 - 3 = 3. 
   
 // Solution
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
+public class xortree {
+    static int MAX = 100001;
+    static int []inTime = new int[MAX];
+    static int []outTime = new int[MAX];
+    static int []subtreeXor = new int[MAX];
+    static int currTime = 0;
+
+    public static void subTreeSum(int curr, int par, HashMap<Integer, ArrayList<Integer>> graph) {
+        inTime[curr] = ++currTime;
+        subtreeXor[curr] = curr;
+
+        for(int child : graph.get(curr)) {
+            if(child != par) {
+                subTreeSum(child, curr, graph);
+                subtreeXor[curr] ^= subtreeXor[child];
+            }
+        }
+
+        outTime[curr] = ++currTime;
+    }
+  
+    public static boolean sameSubtree(int a, int b) {
+        return (inTime[a] <= inTime[b]) && (outTime[b] <= outTime[a]);
+    }
+  
+    public static int solve(int n, int edges[][]) {
+        HashMap<Integer, ArrayList<Integer>> graph = new HashMap<>();
+      
+        for (int i = 1; i <= n; i++) {
+            graph.put(i, new ArrayList<Integer>());
+        }
+      
+        for (int i = 0; i < edges.length; i++) {
+            graph.get(edges[i][0]).add(edges[i][1]);
+            graph.get(edges[i][1]).add(edges[i][0]);
+        }
+
+        subTreeSum(1, -1, graph);
+
+        int xorTree = subtreeXor[1];
+        int ans = Integer.MAX_VALUE;
+      
+        for (int i = 2; i <= n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+                int a, b, c;
+
+                if (!sameSubtree(i, j) && !sameSubtree(j, i)) {
+                    a = subtreeXor[i];
+                    b = subtreeXor[j];
+                } 
+                else if (sameSubtree(i, j)) {
+                    a = subtreeXor[j];
+                    b = (a ^ subtreeXor[i]);
+                } 
+                else {
+                    a = subtreeXor[i];
+                    b = (a ^ subtreeXor[j]);
+                }
+
+                c = (xorTree ^ a ^ b);
+                ans = Math.min(ans, Math.max(a, Math.max(b, c)) - Math.min(a, Math.min(b, c)));
+            }
+        }
+        return ans;
+    }
+    public static void main(String args[]) {
+        System.out.println(solve(4, new int[][]{{1,2},{2,3},{4,1}}));
+        System.out.println(solve(5, new int[][]{{1,2},{1,4},{1,5},{3,4}}));
+    }
+}
+// TC: O(n^2); SC: O(n)
