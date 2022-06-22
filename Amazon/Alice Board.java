@@ -41,3 +41,89 @@
 // the answer is 0.
   
 // Solution
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+public class alice {
+    static class node {
+        int x;
+        int y;
+
+        public node(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+    static class UF {
+        int[] root;
+        int size;
+
+        public UF (int n) {
+            root = new int[n];
+            size = 0;
+
+            for (int i = 0; i < n; i++) {
+                root[i] = i;
+            }
+        }
+
+        public int find(int i) {
+            while (i != root[i]) {
+                i = root[i];
+            }
+
+            return i;
+        }
+
+        public void union(int i, int j) {
+            if (find(i) == find(j)) {
+                return;
+            }
+
+            root[find(i)] = find(j);
+
+            return;
+        }
+
+        public int findSize() {
+            Set<Integer> set = new HashSet<>();
+
+            for (int num : root) {
+                set.add(find(num));
+            }
+
+            return set.size();
+        }
+    }
+    public static int alice(int n, int[][] A) {
+        UF uf = new UF(n);
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (A[i][0] == A[j][0]) {
+                    uf.union(i, j);
+                }
+            }
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (A[i][1] == A[j][1]) {
+                    uf.union(i, j);
+                }
+            }
+        }
+
+        int ans = uf.findSize() - 1;
+
+        return ans;
+    }
+    public static void main(String args[]) {
+        System.out.println(alice(2, new int[][]{{1,2},{2,1}}));
+        System.out.println(alice(2, new int[][]{{2,1},{4,1}}));
+        System.out.println(alice(4, new int[][]{{0,2},{1,4},{0,0},{3,1}}));
+    }
+}
+// TC: O(n^2); SC: O(n)
