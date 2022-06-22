@@ -47,20 +47,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class alice {
-    static class node {
-        int x;
-        int y;
-
-        public node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
     static class UF {
         int[] root;
         int size;
 
-        public UF (int n) {
+        public UF(int n) {
             root = new int[n];
             size = 0;
 
@@ -97,6 +88,7 @@ public class alice {
             return set.size();
         }
     }
+  
     public static int alice(int n, int[][] A) {
         UF uf = new UF(n);
 
@@ -120,6 +112,7 @@ public class alice {
 
         return ans;
     }
+   
     public static void main(String args[]) {
         System.out.println(alice(2, new int[][]{{1,2},{2,1}}));
         System.out.println(alice(2, new int[][]{{2,1},{4,1}}));
