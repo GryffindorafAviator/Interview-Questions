@@ -51,9 +51,9 @@ import java.util.Stack;
 
 public class xortree {
     static int MAX = 100001;
-    static int []inTime = new int[MAX];
-    static int []outTime = new int[MAX];
-    static int []subtreeXor = new int[MAX];
+    static int[] inTime = new int[MAX];
+    static int[] outTime = new int[MAX];
+    static int[] subtreeXor = new int[MAX];
     static int currTime = 0;
 
     public static void subTreeSum(int curr, int par, HashMap<Integer, ArrayList<Integer>> graph) {
