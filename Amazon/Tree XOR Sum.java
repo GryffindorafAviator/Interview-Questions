@@ -60,8 +60,8 @@ public class xortree {
         inTime[curr] = ++currTime;
         subtreeXor[curr] = curr;
 
-        for(int child : graph.get(curr)) {
-            if(child != par) {
+        for (int child : graph.get(curr)) {
+            if (child != par) {
                 subTreeSum(child, curr, graph);
                 subtreeXor[curr] ^= subtreeXor[child];
             }
