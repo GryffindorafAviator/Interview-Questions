@@ -112,6 +112,7 @@ public class xortree {
                 ans = Math.min(ans, Math.max(a, Math.max(b, c)) - Math.min(a, Math.min(b, c)));
             }
         }
+      
         return ans;
     }
   
